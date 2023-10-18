@@ -3,6 +3,9 @@ package com.github.anguzudaniel.profanity
 val profaneWords = listOf(
     "love",
     "fuck",
+    "stupid",
+    "nigga",
+    "ugly",
     "expletive",
     "curse",
     "swearword",
@@ -23,7 +26,6 @@ val profaneWords = listOf(
     "impolite",
     "vulgarity",
     "improper",
-    "off-color",
     "taboo",
     "repugnant"
 )

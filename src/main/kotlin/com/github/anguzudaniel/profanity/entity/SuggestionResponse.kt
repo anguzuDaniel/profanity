@@ -1,9 +1,7 @@
 package com.github.anguzudaniel.profanity.entity
 
 import jakarta.persistence.*
-import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 @Table(name = "responses")

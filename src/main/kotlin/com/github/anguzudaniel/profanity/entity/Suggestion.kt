@@ -23,6 +23,9 @@ data class Suggestion(
     @Column(name = "profanity_score")
     var profanityScore: Double = 0.0,
 
+    @Column(name = "profane_words_found")
+    var profaneWordsFound: List<String> = emptyList(),
+
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "suggestion_id") // This is the foreign key column in the SuggestionResponse table
     var suggestionResponses: MutableList<SuggestionResponse> = mutableListOf(),
