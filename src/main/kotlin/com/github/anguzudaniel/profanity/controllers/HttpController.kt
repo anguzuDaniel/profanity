@@ -10,22 +10,26 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/profanity")
-class HttpController(val service: SuggestionService) {
+class HttpController(private val service: SuggestionService) {
 
     @GetMapping("/")
     fun getSuggestions(): List<Suggestion> = service.getSuggestions()
 
     // returns multiple json objects of profane words are found
-    @GetMapping("/filter/{text:.+}/multiple")
+    @GetMapping("/filter/multiple/{text:.+}")
     fun filterTextWithMultipleSuggestions(@PathVariable text: String): List<Suggestion> {
         return service.filterSuggestions(text)
     }
 
     // return a single json if profane words are found
     // gets the profane words too
-    @GetMapping("/filter/{text:.+}/single")
+    @GetMapping("/filter/single/{text:.+}")
     fun filterTextWithSingleSuggestion(@PathVariable text: String): Suggestion {
         val profanities = service.getProfaneWords(text)
-        return Suggestion(id = UUID.randomUUID(), text = "Inappropriate language detected", profaneWordsFound = profanities)
+        return Suggestion(
+            id = UUID.randomUUID(),
+            text = "Inappropriate language detected",
+            profaneWordsFound = profanities
+        )
     }
 }
