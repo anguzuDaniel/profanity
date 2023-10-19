@@ -1,7 +1,7 @@
 package com.github.anguzudaniel.profanity.controllers
 
 import com.github.anguzudaniel.profanity.entity.Suggestion
-import com.github.anguzudaniel.profanity.repositories.SuggestionRepository
+import com.github.anguzudaniel.profanity.repositories.SuggestionResponseRepository
 import com.github.anguzudaniel.profanity.services.SuggestionService
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +25,7 @@ class HttpControllerTest(@Autowired val mockMvc: MockMvc) {
     private val suggestionService = mockk<SuggestionService>()
 
     @MockBean
-    lateinit var suggestionRepository: SuggestionRepository
+    lateinit var suggestionRepository: SuggestionResponseRepository
 
     private var URL = "What%20the%20fuck%20are%20you%20saying"
 
