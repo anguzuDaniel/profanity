@@ -21,7 +21,7 @@ class HttpController(
 ) {
 
     @GetMapping("/")
-    fun getSuggestions(): List<Suggestion> = suggestionService.getSuggestions()
+    fun getSuggestions(): List<SuggestionResponse> = suggestionResponseService.getSuggestionResponse()
 
     @PostMapping("/suggestions")
     fun getSuggestionResponse(): List<SuggestionResponse> = suggestionResponseService.getSuggestionResponse()

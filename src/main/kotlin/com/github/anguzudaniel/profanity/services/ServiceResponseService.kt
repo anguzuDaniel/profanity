@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class SuggestionResponseService(private val db: SuggestionResponseRepository) {
-    fun getSuggestionResponse() = db.findAll().toList()
+    fun getSuggestionResponse(): List<SuggestionResponse> = db.findAll().toList()
 
     fun addSuggestions(suggestionResponse: SuggestionResponse) = db.save(suggestionResponse)
 
