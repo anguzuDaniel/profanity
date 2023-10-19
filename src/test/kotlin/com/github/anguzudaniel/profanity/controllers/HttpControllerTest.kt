@@ -8,15 +8,13 @@ import com.github.anguzudaniel.profanity.services.SuggestionService
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.Matchers.hasSize
 import org.json.JSONArray
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -25,12 +23,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.util.*
 
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class HttpControllerTest(@Autowired val mockMvc: MockMvc) {
 
     private val suggestionService = mockk<SuggestionService>()
     private val suggestionResponseService = mockk<SuggestionResponseService>()
+
     @Autowired
     private lateinit var suggestionResponseRepository: SuggestionResponseRepository
 
@@ -92,6 +91,37 @@ class HttpControllerTest(@Autowired val mockMvc: MockMvc) {
     }
 
     @Test
+    fun `get suggestions by number`() {
+        val num = 2
+
+        val suggestedResponse = SuggestionResponse(
+            id = 1,
+            responseText = "Great job! Keep it up.",
+            createdBy = "Admin",
+            suggestion = null
+        )
+        val suggestedResponse1 = SuggestionResponse(
+            id = 2,
+            responseText = "Interesting idea. I like it.",
+            createdBy = "Admin",
+            suggestion = null
+        )
+
+        every { suggestionResponseService.getLimitedNumberOfSuggestions(num) } returns listOf(
+            suggestedResponse,
+            suggestedResponse1
+        )
+
+        mockMvc.perform(
+            get("/api/v1/profanity/$num")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize<Int>(num)))
+    }
+
+    @Test
     fun `filter text with multiple suggestions`() {
         val suggestion = Suggestion(id = UUID.randomUUID(), "Inappropriate language detected: fuck")
         val suggestion1 = Suggestion(id = UUID.randomUUID(), "Inappropriate language detected: fuck")
@@ -117,7 +147,7 @@ class HttpControllerTest(@Autowired val mockMvc: MockMvc) {
 
         every { suggestionService.getProfaneWords(URL) } returns listOf(profaneWord)
 
-        val responseContent = mockMvc.perform(
+        mockMvc.perform(
             get("/api/v1/profanity/filter/single/{text:.+}", "What the fuck")
                 .accept(MediaType.APPLICATION_JSON)
         )

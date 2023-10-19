@@ -4,6 +4,7 @@ import com.github.anguzudaniel.profanity.entity.Suggestion
 import com.github.anguzudaniel.profanity.entity.SuggestionResponse
 import com.github.anguzudaniel.profanity.services.SuggestionResponseService
 import com.github.anguzudaniel.profanity.services.SuggestionService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,9 +20,18 @@ class HttpController(
     private val suggestionService: SuggestionService,
     private val suggestionResponseService: SuggestionResponseService
 ) {
-
     @GetMapping("/")
     fun getSuggestions(): List<SuggestionResponse> = suggestionResponseService.getSuggestionResponse()
+
+    /**
+     * getting a limited number of suggestion responses
+     * @param num get the number specified from the url
+     */
+    @GetMapping("/{num}")
+    fun getSuggestionsByNumber(@PathVariable num: Int): ResponseEntity<List<SuggestionResponse>> {
+        val suggestions = suggestionResponseService.getLimitedNumberOfSuggestions(num)
+        return ResponseEntity.ok(suggestions)
+    }
 
     @PostMapping("/suggestions")
     fun getSuggestionResponse(): List<SuggestionResponse> = suggestionResponseService.getSuggestionResponse()

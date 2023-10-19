@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class SuggestionResponseService(private val db: SuggestionResponseRepository) {
+    fun getNumberOfSuggestionAvailable() = db.count()
+
     fun getSuggestionResponse(): List<SuggestionResponse> = db.findAll().toList()
 
     fun addSuggestions(suggestionResponse: SuggestionResponse) = db.save(suggestionResponse)
 
     fun deleteSuggestionResponse(id: Long) = db.deleteById(id)
+    fun getLimitedNumberOfSuggestions(num: Int): List<SuggestionResponse> = db.limitSuggestionResponses(num)
 }
