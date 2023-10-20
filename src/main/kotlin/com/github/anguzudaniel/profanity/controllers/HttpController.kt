@@ -47,10 +47,14 @@ class HttpController(
     @GetMapping("/filter/single/{text:.+}")
     fun filterTextWithSingleSuggestion(@PathVariable text: String): Suggestion {
         val profanities = suggestionService.getProfaneWords(text)
+
+        val suggestions: MutableList<SuggestionResponse> = suggestionResponseService.getAppropriateResponses(text)
+
         return Suggestion(
             id = UUID.randomUUID(),
             text = "Inappropriate language detected",
-            profaneWordsFound = profanities
+            profaneWordsFound = profanities,
+            suggestedResponses = suggestions
         )
     }
 

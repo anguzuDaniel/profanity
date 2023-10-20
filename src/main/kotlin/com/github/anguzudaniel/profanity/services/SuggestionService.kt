@@ -49,13 +49,14 @@ class SuggestionService(private val db: SuggestionRepository) {
     fun addSuggestion(suggestion: Suggestion) = db.save(suggestion)
 
     fun deleteById(id: Long) = db.deleteById(id)
+}
 
-    private fun decodeString(encodedText: String): List<String> {
-        // The 'text' may contain something like "What%20the%20fuck%20are%20you%20saying"
-        // decode and then filter the text.
-        val decodedText = URLDecoder.decode(encodedText, "UTF-8")
 
-        // splits the by space
-        return decodedText.split(" ")
-    }
+fun decodeString(encodedText: String): List<String> {
+    // The 'text' may contain something like "What%20the%20fuck%20are%20you%20saying"
+    // decode and then filter the text.
+    val decodedText = URLDecoder.decode(encodedText, "UTF-8")
+
+    // splits the by space
+    return decodedText.split(" ")
 }

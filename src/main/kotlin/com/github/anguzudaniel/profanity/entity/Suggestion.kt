@@ -27,8 +27,9 @@ data class Suggestion(
     var profaneWordsFound: List<String> = emptyList(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "suggestion_id") // This is the foreign key column in the SuggestionResponse table
-    var suggestionResponses: MutableList<SuggestionResponse> = mutableListOf(),
+    @JoinColumn(name = "suggestion_id")
+    @Column(name = "suggested_responses")// This is the foreign key column in the SuggestionResponse table
+    var suggestedResponses: MutableList<SuggestionResponse> = mutableListOf(),
 
     @Column(name = "created_by")
     var createdBy: String? = null,
